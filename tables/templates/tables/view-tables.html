@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% for table in tables %}
+
+<li><p>Title: <a href="{% url 'view-table' table.id %}">{{table.title}}</a></p></li>
+{% endfor %}
+
+{% endblock %}

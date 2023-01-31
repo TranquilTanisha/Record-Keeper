@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h1>{{table.title}}</h1>
+
+{% if table.desc %}
+<p>{{table.desc}}}</p>
+{% endif %}
+
+<table>
+    <tr>
+        <th>Sr.No</th>
+        {% if table.col1 %}
+        <th>{{table.col1}}</th>
+        {% endif %}
+        {% if table.col2 %}
+        <th>{{table.col2}}</th>
+        {% endif %}
+        {% if table.col3 %}
+        <th>{{table.col3}}</th>
+        {% endif %}
+        {% if table.col4 %}
+        <th>{{table.col4}}</th>
+        {% endif %}
+        {% if table.col5 %}
+        <th>{{table.col5}}</th>
+        {% endif %}
+        <th>Date (yyyy-mm-dd)</th>
+    </tr>
+    {% for column in columns %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        {% if column.col1 %}
+        <td>{{column.col1}}</td>
+        {% endif %}
+        {% if column.col2 %}
+        <td>{{column.col2}}</td>
+        {% endif %}
+        {% if column.col3 %}
+        <td>{{column.col3}}</td>
+        {% endif %}
+        {% if column.col4 %}
+        <td>{{column.col4}}</td>
+        {% endif %}
+        {% if column.col5 %}
+        <td>{{column.col5}}</td>
+        {% endif %}
+        <td>{{column.date}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Total: {{columns.total}}</p>
+{% endblock %}
