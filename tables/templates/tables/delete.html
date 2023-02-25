@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if name == "table" %}
+    <p>Are you sure you want to delete the table: "{{object.title}}"" ?</p>
+
+    {% else %}
+    <p>Are you sure u want to delete this row?</p>
+    <tr>
+        {% if object.col1 %}
+        <td>{{object.col1}}</td>
+        {% endif %}
+
+        {% if object.col2 %}
+        <td>{{object.col2}}</td>
+        {% endif %}
+
+        {% if object.col3 %}
+        <td>{{object.col3}}</td>
+        {% endif %}
+
+        {% if object.col4 %}
+        <td>{{object.col4}}</td>
+        {% endif %}
+
+        {% if object.col5 %}
+        <td>{{object.col5}}</td>
+        {% endif %}
+        <td>{{object.date}}</td>
+    </tr>
+
+    {% endif %}
+    <input type="submit" value="Yes">
+</form>
+
+{% endblock %}

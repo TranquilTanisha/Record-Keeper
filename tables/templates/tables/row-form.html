@@ -1,0 +1,153 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}   
+    <table>
+        <tr>
+            <th>Sr.No</th>
+            {% if table.col1 %}
+            <th>{{table.col1}}</th>
+            {% endif %}
+            {% if table.col2 %}
+            <th>{{table.col2}}</th>
+            {% endif %}
+            {% if table.col3 %}
+            <th>{{table.col3}}</th>
+            {% endif %}
+            {% if table.col4 %}
+            <th>{{table.col4}}</th>
+            {% endif %}
+            {% if table.col5 %}
+            <th>{{table.col5}}</th>
+            {% endif %}
+            <th>Date (yyyy-mm-dd)</th>
+        </tr>
+        {% if name == "add" %}
+        <tr>
+            <td>0</td>
+            {% if table.col1 %}
+                <td>{{form.col1}}</td>
+            {% endif %}
+
+            {% if table.col2 %}
+                <td>{{form.col2}}</td>
+            {% endif %}
+
+            {% if table.col3 %}
+                <td>{{form.col3}}</td>
+            {% endif %}
+
+            {% if table.col4 %}
+                <td>{{form.col4}}</td>
+            {% endif %}
+
+            {% if table.col5 %}
+                <td>{{form.col5}}</td>
+            {% endif %}
+            <td>{{form.date}}</td>
+            <td><input type="submit"></td>
+        </tr>
+
+        {% for row in rows %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            {% if row.col1 %}
+            <td>{{row.col1}}</td>
+            {% endif %}
+            {% if row.col2 %}
+            <td>{{row.col2}}</td>
+            {% endif %}
+            {% if row.col3 %}
+            <td>{{row.col3}}</td>
+            {% endif %}
+            {% if row.col4 %}
+            <td>{{row.col4}}</td>
+            {% endif %}
+            {% if row.col5 %}
+            <td>{{row.col5}}</td>
+            {% endif %}
+            <td>{{row.date}}</td>
+        </tr>
+        {% endfor %}
+        
+        {% else %}
+        <tr>
+            <td>0</td>
+            {% if table.col1 %}
+                <td>{{form.col1}}</td>
+            {% endif %}
+        
+            {% if table.col2 %}
+                <td>{{form.col2}}</td>
+            {% endif %}
+        
+            {% if table.col3 %}
+                <td>{{form.col3}}</td>
+            {% endif %}
+        
+            {% if table.col4 %}
+                <td>{{form.col4}}</td>
+            {% endif %}
+        
+            {% if table.col5 %}
+                <td>{{form.col5}}</td>
+            {% endif %}
+            <td>{{form.date}}</td>
+            <td><input type="submit"></td>  
+        </tr>
+        {% endif %}
+    </table>
+
+{% endblock %}
+
+{% for r in rows %}
+        <tr>
+            {% if r.id == row.id %}
+        
+            {% if table.col1 %}
+            <td>{{form.col1}}</td>
+            {% endif %}
+        
+            {% if table.col2 %}
+            <td>{{form.col2}}</td>
+            {% endif %}
+        
+            {% if table.col3 %}
+            <td>{{form.col3}}</td>
+            {% endif %}
+        
+            {% if table.col4 %}
+            <td>{{form.col4}}</td>
+            {% endif %}
+        
+            {% if table.col5 %}
+            <td>{{form.col5}}</td>
+            {% endif %}
+            <td>{{form.date}}</td>
+            <td><input type="submit"></td>
+        
+            {% else %}
+            <td>{{forloop.counter}}</td>
+            {% if r.col1 %}
+            <td>{{r.col1}}</td>
+            {% endif %}
+            {% if r.col2 %}
+            <td>{{r.col2}}</td>
+            {% endif %}
+            {% if r.col3 %}
+            <td>{{r.col3}}</td>
+            {% endif %}
+            {% if r.col4 %}
+            <td>{{r.col4}}</td>
+            {% endif %}
+            {% if r.col5 %}
+            <td>{{r.col5}}</td>
+            {% endif %}
+            <td>{{r.date}}</td>
+            
+            {% endif %}
+        </tr>
+              
+        {% endfor %}

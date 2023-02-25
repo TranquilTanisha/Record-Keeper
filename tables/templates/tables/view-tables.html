@@ -2,9 +2,27 @@
 
 {% block content %}
 
-{% for table in tables %}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Created on</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for table in tables %}
+    <tr>
+        <td>{{table.title}}</td>
+        <td>{{table.desc|slice:150}}</td>
+        <td>{{table.created}}</td>
+        <td><a href="{% url 'view-table' table.id %}">View</a></td>
+        <td><a href="{% url 'view-table' table.id %}">Edit</a></td>
+        <td><a href="{% url 'delete-table' table.id %}">Delete</a></td>
+        
+    </tr>
+    {% endfor %}
 
-<li><p>Title: <a href="{% url 'view-table' table.id %}">{{table.title}}</a></p></li>
-{% endfor %}
+</table>
 
 {% endblock %}

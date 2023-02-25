@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% if name == "add table" %}
+<h1>Kindly add the further details:</h1>
+{% elif name == "edit table" %}
+<h1>Kindly edit the details of your record:</h1>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form__field">
+            <label for="formInput#text">{{field.label}}</label>
+            {{field}}
+                    
+        </div>
+    {% endfor %}
+    <input type="submit">
+</form>
+
+{% endblock %}
+

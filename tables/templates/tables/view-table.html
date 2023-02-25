@@ -5,7 +5,7 @@
 <h1>{{table.title}}</h1>
 
 {% if table.desc %}
-<p>{{table.desc}}}</p>
+<p>{{table.desc}}</p>
 {% endif %}
 
 <table>
@@ -27,28 +27,33 @@
         <th>{{table.col5}}</th>
         {% endif %}
         <th>Date (yyyy-mm-dd)</th>
+        <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
+        <th><a href="{% url 'add-row' table.id %}">Add a row</a></th>
     </tr>
-    {% for column in columns %}
+    {% for row in rows %}
     <tr>
         <td>{{forloop.counter}}</td>
-        {% if column.col1 %}
-        <td>{{column.col1}}</td>
+        {% if row.col1 %}
+        <td>{{row.col1}}</td>
         {% endif %}
-        {% if column.col2 %}
-        <td>{{column.col2}}</td>
+        {% if row.col2 %}
+        <td>{{row.col2}}</td>
         {% endif %}
-        {% if column.col3 %}
-        <td>{{column.col3}}</td>
+        {% if row.col3 %}
+        <td>{{row.col3}}</td>
         {% endif %}
-        {% if column.col4 %}
-        <td>{{column.col4}}</td>
+        {% if row.col4 %}
+        <td>{{row.col4}}</td>
         {% endif %}
-        {% if column.col5 %}
-        <td>{{column.col5}}</td>
+        {% if row.col5 %}
+        <td>{{row.col5}}</td>
         {% endif %}
-        <td>{{column.date}}</td>
+        <td>{{row.date}}</td>
+        <td><a href="{% url 'edit-row' table.id row.id %}">Edit row</a></td>
+        <td><a href="{% url 'delete-row' row.id %}">Delete row</a></td>
     </tr>
     {% endfor %}
 </table>
-<p>Total: {{columns.total}}</p>
+<p>Total:{{table.total}}</p>
+<p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
 {% endblock %}
