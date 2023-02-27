@@ -1,7 +1,16 @@
 <h1>Navbar - </h1>
 
-<a href="{% url 'home' %}">Records Keeper</a>
+<a href="{% url 'view-tables' %}">Records Keeper</a>
 <a href="{% url 'add-table' %}">New Record</a>
 <a href="{% url 'view-tables' %}">View Records</a>
+
+{% if request.user.is_authenticated %}
+<a href="{% url 'account' %}">Account</a>
+<a href="{% url 'logout' %}">Logout</a>
+
+{% else %}
+<a href="{% url 'login' %}">Login/Sign Up</a>
+{% endif %}
+
 <hr>
   

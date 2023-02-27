@@ -19,6 +19,9 @@ class Table(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        ordering = ['-title', '-created']
 
     @property
     def getTotal(self):
@@ -34,16 +37,13 @@ class Row(models.Model):
     col3=models.TextField("Column 3 entry",null=True, blank=True)
     col4=models.TextField("Column 4 entry",null=True, blank=True)
     col5=models.TextField("Column 5 entry",null=True, blank=True)
-    date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False)
+    date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False, null=True, blank=True)
     #total=models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
 
-    '''@property
-    def getTotal(self):
-        total_c=date.count()
-        self.total=total_c
-        return self.total'''
-
     def __str__(self):
         return str(self.date)
+    
+    class Meta:
+        ordering = ['date', 'col1', 'col2', 'col3', 'col4', 'col5', '-created']

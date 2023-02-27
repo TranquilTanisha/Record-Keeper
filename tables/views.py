@@ -2,10 +2,6 @@ from django.shortcuts import render, redirect
 from .models import Table, Row
 from .forms import TableForm, RowForm
 
-# Create your views here.
-def home(request):
-    return render(request, "tables/home.html")
-
 def viewTables(request):
     tables=Table.objects.all()
     context={"tables":tables}

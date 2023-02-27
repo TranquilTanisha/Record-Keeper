@@ -74,7 +74,7 @@
         
         {% else %}
         <tr>
-            <td>0</td>
+            <td>--</td>
             {% if table.col1 %}
                 <td>{{form.col1}}</td>
             {% endif %}
@@ -124,12 +124,14 @@
         
             {% if table.col5 %}
             <td>{{form.col5}}</td>
-            {% endif %}
+            {% endif %} 
+            {% if table.date %}
             <td>{{form.date}}</td>
+            {% endif %}            
             <td><input type="submit"></td>
         
             {% else %}
-            <td>{{forloop.counter}}</td>
+            <td>--</td>
             {% if r.col1 %}
             <td>{{r.col1}}</td>
             {% endif %}
@@ -145,9 +147,11 @@
             {% if r.col5 %}
             <td>{{r.col5}}</td>
             {% endif %}
+            {% if r.date %}
             <td>{{r.date}}</td>
             
             {% endif %}
+            {% endif %} 
         </tr>
               
-        {% endfor %}
+{% endfor %}

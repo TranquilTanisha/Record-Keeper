@@ -48,12 +48,15 @@
         {% if row.col5 %}
         <td>{{row.col5}}</td>
         {% endif %}
+        {% if row.date %}
         <td>{{row.date}}</td>
+        {% endif %}
+        
         <td><a href="{% url 'edit-row' table.id row.id %}">Edit row</a></td>
         <td><a href="{% url 'delete-row' row.id %}">Delete row</a></td>
     </tr>
     {% endfor %}
 </table>
-<p>Total:{{table.total}}</p>
+<p>Total number of rows: {{table.total}}</p>
 <p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
 {% endblock %}
