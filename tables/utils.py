@@ -14,7 +14,7 @@ def searchRow(request):
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
 
-    rows=Table.objects.distinct().filter(
+    rows=Row.objects.distinct().filter(
         Q(col1__icontains=search_query) |
         Q(col2__icontains=search_query) |
         Q(col3__icontains=search_query) |
