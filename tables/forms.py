@@ -16,6 +16,7 @@ class TableForm(ModelForm):
         self.fields['col3'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
         self.fields['col4'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
         self.fields['col5'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
+        #self.fields['date'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
 
 #add the data of rows to the table
 class RowForm(ModelForm):

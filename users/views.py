@@ -9,10 +9,10 @@ from .forms import CustomUserCreationForm, ProfileForm
 def loginUser(request):
     page='login'
     if request.user.is_authenticated:
-        return redirect('profiles')
+        return redirect('account')
 
     if request.method=="POST":
-        username=request.POST['username'].lower()
+        username=request.POST['username']
         password=request.POST['password']
         try:
             user=User.objects.get(username=username)
@@ -27,8 +27,7 @@ def loginUser(request):
         else:
             messages.error(request, "Username or password is incorrect")
 
-    context={}
-    return render(request, 'users/login-register.html', context)
+    return render(request, 'users/login-register.html')
 
 def registerUser(request):
     page='register'
@@ -38,12 +37,14 @@ def registerUser(request):
         form=CustomUserCreationForm(request.POST)
         if form.is_valid():
             user=form.save(commit=False)
-            user.username=user.username.lower()
+            user.username=user.username
+            user.email=user.email
+            user.first_name=user.first_name
             user.save()
 
             #messages.success(request, "User account was created")
             login(request, user)
-            return redirect('profile')
+            return redirect('account')
 
         else:
             messages.info(request, "An error has occured during registration")

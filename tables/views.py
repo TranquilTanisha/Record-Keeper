@@ -1,20 +1,26 @@
 from django.shortcuts import render, redirect
 from .models import Table, Row
 from .forms import TableForm, RowForm
+from django.contrib.auth.decorators import login_required
 
 def viewTables(request):
-    tables=Table.objects.all()
+    profile=request.user.profile
+    tables=profile.table_set.all()
     context={"tables":tables}
     return render(request, "tables/view-tables.html", context)
 
+@login_required(login_url="login")
 def addTable(request):
+    profile=request.user.profile
     form=TableForm()
 
     if request.method=="POST":
         form=TableForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("home")
+            table=form.save(commit=False)
+            table.owner=profile
+            table.save()
+            return redirect("view-table", table.id)
 
     context={"form":form, "name": "add table"}
     return render(request, "tables/table-form.html", context)
@@ -26,8 +32,10 @@ def viewTable(request, pk):
     context={"table":table, "rows":rows}
     return render(request, "tables/view-table.html", context)
 
+@login_required(login_url="login")
 def editTable(request, pk):
-    table=Table.objects.get(id=pk)
+    profile=request.user.profile
+    table=profile.table_set.get(id=pk)
     form=TableForm(instance=table)
     if request.method == "POST":
         form=TableForm(request.POST, instance=table)
@@ -37,14 +45,17 @@ def editTable(request, pk):
     context={"form":form, "name": "edit table"}
     return render(request, "tables/table-form.html", context)
 
+@login_required(login_url="login")
 def deleteTable(request,pk):
-    table=Table.objects.get(id=pk)
+    profile=request.user.profile
+    table=profile.table_set.get(id=pk)
     if request.method == "POST":
         table.delete()
         return redirect("view-tables")
     context={"object":table, "name": "table"}
     return render(request, "tables/delete.html", context)
 
+@login_required(login_url="login")
 def addRow(request,pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
@@ -60,6 +71,7 @@ def addRow(request,pk):
     context={"form":form, "name": "add", "table":table, "rows":rows}
     return render(request, "tables/row-form.html", context)
 
+@login_required(login_url="login")
 def editRow(request, tk, pk):
     row=Row.objects.get(id=pk)
     table=Table.objects.get(id=tk)
@@ -76,6 +88,7 @@ def editRow(request, tk, pk):
     context={"form":form, "table":table, "rows":rows, "name": "edit", "pk":pk}
     return render(request, "tables/row-form.html", context)
 
+@login_required(login_url="login")
 def deleteRow(request,pk):
     row=Row.objects.get(id=pk)
     if request.method == "POST":

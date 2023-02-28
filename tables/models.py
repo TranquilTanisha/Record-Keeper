@@ -1,9 +1,11 @@
 from django.db import models
 from datetime import datetime, date
+from users.models import Profile
 import uuid
 # Create your models here.
 
 class Table(models.Model):
+    owner=models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     title=models.TextField("Title of the table")
     desc=models.TextField("Description",null=True, blank=True)
     col1=models.TextField("Column 1",null=True, blank=True)
@@ -11,7 +13,7 @@ class Table(models.Model):
     col3=models.TextField("Column 3",null=True, blank=True)
     col4=models.TextField("Column 4",null=True, blank=True)
     col5=models.TextField("Column 5",null=True, blank=True)
-    #date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False)
+    #date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False, null=True, blank=True)
     total=models.IntegerField(default=0, null=True, blank=True)
     #column=models.ManyToManyField("Column", blank=True)
     created = models.DateTimeField(auto_now_add=True)
