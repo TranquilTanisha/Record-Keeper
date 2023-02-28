@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from .models import Table, Row
 from .forms import TableForm, RowForm
 from django.contrib.auth.decorators import login_required
+from . utils import searchTable, searchRow
 
 def viewTables(request):
     profile=request.user.profile
     tables=profile.table_set.all()
-    context={"tables":tables}
+    tables, search_query=searchRow(request)
+    context={"tables":tables, "search_query":search_query}
     return render(request, "tables/view-tables.html", context)
 
 @login_required(login_url="login")
@@ -28,7 +30,9 @@ def addTable(request):
 def viewTable(request, pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
+    #rows, search_query=searchRow(request)
     table.getTotal
+    #context={"table":table, "rows":rows, "search_query":search_query}
     context={"table":table, "rows":rows}
     return render(request, "tables/view-table.html", context)
 

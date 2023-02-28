@@ -2,6 +2,16 @@
 
 {% block content %}
 
+<form id='searchForm' class="form" action="{% url 'view-tables' %}" method="get">
+    <div class="form__field">
+      <label for="formInput#search">Search By Reoord name </label>
+      <input class="input input--text" id="formInput#search" type="text" name="search_query"
+        placeholder="Search" value="{{search_query}}" />
+    </div>
+
+    <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+  </form>
+
 <table>
     <tr>
         <th>Title</th>
