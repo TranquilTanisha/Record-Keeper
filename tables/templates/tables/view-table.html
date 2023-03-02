@@ -69,4 +69,6 @@
 </table>
 <p>Total number of rows: {{table.total}}</p>
 <p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
+<p><a href="{% url 'view-pdf' table.id %}">View PDF</a></p>
+<p><a href="{% url 'download-pdf' table.id %}">Download as PDF</a></p>
 {% endblock %}

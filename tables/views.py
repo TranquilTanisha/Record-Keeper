@@ -4,6 +4,11 @@ from .forms import TableForm, RowForm
 from django.contrib.auth.decorators import login_required
 from . utils import searchTable, searchRow
 
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+@login_required(login_url="login")
 def viewTables(request):
     profile=request.user.profile
     tables=profile.table_set.all()
@@ -101,3 +106,38 @@ def deleteRow(request,pk):
         
     context={"object":row, "name": "row"}
     return render(request, "tables/delete.html", context)
+
+def view_pdf(request,pk):
+    table=Table.objects.get(id=pk)
+    rows=table.row_set.all()
+    table.getTotal
+    context={"table":table, "rows":rows}
+
+    template_path="tables/view-pdf.html"
+    response=HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"]="filename='record.pdf'"
+    template=get_template(template_path)
+    html=template.render(context)
+
+    pisa_status=pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse("We had some errors <pre>"+html+"</pre>")
+    return response
+
+def download_pdf(request,pk):
+    table=Table.objects.get(id=pk)
+    rows=table.row_set.all()
+    table.getTotal
+    context={"table":table, "rows":rows}
+    filename=table.title
+
+    template_path="tables/view-pdf.html"
+    response=HttpResponse(content_type='application/pdf')
+    response["Content-Disposition"]="attachment; filename=%s.pdf " % filename
+    template=get_template(template_path)
+    html=template.render(context)
+
+    pisa_status=pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse("We had some errors <pre>"+html+"</pre>")
+    return response

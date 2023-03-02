@@ -1,0 +1,57 @@
+<h1>{{table.title}}</h1>
+
+{% if table.desc %}
+<p>{{table.desc}}</p>
+{% endif %}
+
+<table class="table">
+    <thread>
+    <tr>
+        <th scope="col">Sr.No</th>
+        {% if table.col1 %}
+        <th scope="col">{{table.col1}}</th>
+        {% endif %}
+        {% if table.col2 %}
+        <th scope="col">{{table.col2}}</th>
+        {% endif %}
+        {% if table.col3 %}
+        <th scope="col">{{table.col3}}</th>
+        {% endif %}
+        {% if table.col4 %}
+        <th scope="col">{{table.col4}}</th>
+        {% endif %}
+        {% if table.col5 %}
+        <th scope="col">{{table.col5}}</th>
+        {% endif %}
+        {% if "Date" in rows.date %}
+        <th scope="col">Date (yyyy-mm-dd)</th>
+        {% endif %}
+    </tr>
+    </thread>
+    {% for row in rows %}
+    <tbody>
+    <tr>
+        <td scope="row">{{forloop.counter}}</td>
+        {% if row.col1 %}
+        <td>{{row.col1}}</td>
+        {% endif %}
+        {% if row.col2 %}
+        <td>{{row.col2}}</td>
+        {% endif %}
+        {% if row.col3 %}
+        <td>{{row.col3}}</td>
+        {% endif %}
+        {% if row.col4 %}
+        <td>{{row.col4}}</td>
+        {% endif %}
+        {% if row.col5 %}
+        <td>{{row.col5}}</td>
+        {% endif %}
+        {% if row.date %}
+        <td>{{row.date}}</td>
+        {% endif %}
+    </tr>
+</tbody>
+    {% endfor %}
+</table>
+<p>Total number of rows: {{table.total}}</p>
