@@ -9,12 +9,12 @@ def searchTable(request):
     tables = Table.objects.filter(title__icontains=search_query)
     return tables, search_query
 
-def searchRow(request):
+def searchRow(request, r):
     search_query = ""
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
 
-    rows=Row.objects.distinct().filter(
+    rows=r.distinct().filter(
         Q(col1__icontains=search_query) |
         Q(col2__icontains=search_query) |
         Q(col3__icontains=search_query) |

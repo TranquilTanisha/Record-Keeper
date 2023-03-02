@@ -35,7 +35,7 @@ def addTable(request):
 def viewTable(request, pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
-    rows, search_query=searchRow(request)
+    rows, search_query=searchRow(request, rows)
     table.getTotal
     context={"table":table, "rows":rows, "search_query":search_query}
     #context={"table":table, "rows":rows}

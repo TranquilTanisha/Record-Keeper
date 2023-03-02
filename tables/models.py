@@ -23,7 +23,7 @@ class Table(models.Model):
         return self.title
     
     class Meta:
-        ordering = ['-title', '-created']
+        ordering = ['title', '-created']
 
     @property
     def getTotal(self):
