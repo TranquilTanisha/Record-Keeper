@@ -23,7 +23,7 @@
         {% if table.col5 %}
         <th scope="col">{{table.col5}}</th>
         {% endif %}
-        {% if "Date" in rows.date %}
+        {% if c != 0 %}
         <th scope="col">Date (yyyy-mm-dd)</th>
         {% endif %}
     </tr>

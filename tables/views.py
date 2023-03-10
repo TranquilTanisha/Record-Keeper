@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Table, Row
 from .forms import TableForm, RowForm
 from django.contrib.auth.decorators import login_required
-from . utils import searchTable, searchRow
+from . utils import searchTable, searchRow, orderTable
 
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -37,8 +37,10 @@ def viewTable(request, pk):
     rows=table.row_set.all()
     rows, search_query=searchRow(request, rows)
     table.getTotal
-    context={"table":table, "rows":rows, "search_query":search_query}
-    #context={"table":table, "rows":rows}
+    #count=table.date.count()
+    rows, order_query=orderTable(request, rows)
+    c=rows.exclude(date__isnull=True).count()
+    context={"table":table, "rows":rows, "search_query":search_query, "order_query":order_query, "c":c}
     return render(request, "tables/view-table.html", context)
 
 @login_required(login_url="login")
@@ -111,11 +113,12 @@ def view_pdf(request,pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
     table.getTotal
-    context={"table":table, "rows":rows}
+    c=rows.exclude(date__isnull=True).count()
+    context={"table":table, "rows":rows, "c":c}
 
     template_path="tables/view-pdf.html"
     response=HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"]="filename='record.pdf'"
+    response["Content-Disposition"]="filename='%s.pdf'" %table.title
     template=get_template(template_path)
     html=template.render(context)
 
