@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h1>Welcome to the community </h1>
+
+<p>In this community, you will be able to </p>
+<p>     - create your own tables and share them with others</p>
+<p>     - view the tables ceated by you, edit and delete them</p>    
+<p>     - view other people's tables</p>
+<p>     - search for a table created by you</p>    
+<p>     - search for a record in a particular table</p>
+<p>     - order the records in a table by a specified column in the table, or its date of creation i.e. either latest or Earliest</p>
+<p>     - add, edit or delete a record in a table</p>
+<p>     - view a particular table as a pdf and download it</p>
+<p></p>
+<p></p>
+
+<p>So, what are you waiting for? Create your own table with the link below and share it with your friends!</p>
+<p><a href="{% url 'add-table' %}">Build a new record</a>
+</p>
+
+{% endblock %}

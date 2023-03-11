@@ -8,6 +8,9 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
+def home(request):
+    return render(request, "tables/home.html")
+
 @login_required(login_url="login")
 def viewTables(request):
     profile=request.user.profile

@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<form id='searchForm' class="form" action="#" method="get">
+    <div class="form__field">
+      <label for="formInput#search">Search for a friend?</label>
+      <input class="input input--text" id="formInput#search" type="text" name="search_query"
+        placeholder="Search" value="{{search_query}}" />
+    </div>
+
+    <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+  </form>
+
+{% for profile in profiles %}
+<a href="{% url 'user-profile' profile.id %}">
+<p><li>{{profile.username}}</li></p>
+{% if profile.short_intro %}
+<p>     {{profile.short_intro|slice:"100"}}</p>
+{% endif %}</a>
+
+{% endfor %}
+    {% endblock %}

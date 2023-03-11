@@ -8,6 +8,7 @@
 <p>{{table.desc}}</p>
 {% endif %}
 
+{% if table.total != 0 %}
 <form id='searchForm' class="form" action="{% url 'view-table' table.id %}" method="get">
     <div class="form__field">
       <label for="formInput#search">Search for a record </label>
@@ -17,7 +18,7 @@
 
     <input class="btn btn--sub btn--lg" type="submit" value="Search" />
   </form>
-  {% if table.total != 0 %}
+
   <form id='searchForm' class="form" action="{% url 'view-table' table.id %}" method="get">
     <div class="form__field">
       <label for="formInput#search">Order By</label>
@@ -54,6 +55,8 @@
     <input class="btn btn--sub btn--lg" type="submit" value="Order" />
   </form>
   {% endif %}
+
+
 <table>
     <tr>
         <th>Sr.No</th>
@@ -75,8 +78,12 @@
         {% if c != 0 %}
         <th scope="col">Date (yyyy-mm-dd)</th>
         {% endif %}
+        {% if request.user.id == profile.id %}
+        {% if request.user.id == profile.id %}
         <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
         <th><a href="{% url 'add-row' table.id %}">Add a row</a></th>
+        {% endif %}
+        {% endif %}
     </tr>
     {% if table.total != 0 %}
     {% for row in rows %}
@@ -106,9 +113,10 @@
         {% if row.date %}
         <td>{{row.date}}</td>
         {% endif %}
-        
+        {% if request.user.id == profile.id %}
         <td><a href="{% url 'edit-row' table.id row.id %}">Edit row</a></td>
         <td><a href="{% url 'delete-row' row.id %}">Delete row</a></td>
+        {% endif %}
     </tr>
     {% endfor %}
     
@@ -119,7 +127,9 @@
     {% endif %}
 </table>
 <p>Total number of row{{table.total|pluralize:"s"}}: {{table.total}}</p>
+{% if request.user.id == profile.id %}
 <p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
+{% endif %}
 <p><a href="{% url 'view-pdf' table.id %}">View PDF</a></p>
 <p><a href="{% url 'download-pdf' table.id %}">Download as PDF</a></p>
 {% endblock %}

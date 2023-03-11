@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Profile
 from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
+from .utils import searchProfiles
 
 def loginUser(request):
     page='login'
@@ -57,6 +58,18 @@ def logoutUser(request):
     messages.info(request, "User was logged out")
     return redirect('login')
 
+
+
+def profiles(request):
+    profiles=Profile.objects.all()
+    profiles,search_query=searchProfiles(request)
+    context={'profiles':profiles, 'search_query':search_query}
+    return render(request, "users/profiles.html", context)
+
+def userprofile(request, pk):
+    profile=Profile.objects.get(id=pk)
+    context={'profile':profile}
+    return render(request, "users/user-profile.html", context)
 
 @login_required(login_url='login')
 def userAccount(request):
