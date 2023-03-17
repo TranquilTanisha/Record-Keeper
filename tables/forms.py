@@ -5,18 +5,18 @@ from .models import Table, Row
 class TableForm(ModelForm):
     class Meta:
         model = Table
-        fields = ["title", "desc", "col1", "col2", "col3", "col4", "col5"]
+        fields = ["title", "desc", "col1", "col2", "col3", "col4", "col5", "status"]
 
     def __init__(self, *args, **kwargs):
         super(TableForm,self).__init__(*args, **kwargs)
         self.fields['title'].widget.attrs.update({"class": "input", "placeholder": "Add Title"})
         self.fields['desc'].widget.attrs.update({"class": "input", "placeholder": "Add a cool description (optional)"})
-        self.fields['col1'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
-        self.fields['col2'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
-        self.fields['col3'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
-        self.fields['col4'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
-        self.fields['col5'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
-        #self.fields['date'].widget.attrs.update({"class": "input", "placeholder": "Add name(optional)"})
+        self.fields['col1'].widget.attrs.update({"class": "input", "placeholder": "Add a subject(optional)"})
+        self.fields['col2'].widget.attrs.update({"class": "input", "placeholder": "Add a subject(optional)"})
+        self.fields['col3'].widget.attrs.update({"class": "input", "placeholder": "Add a subject(optional)"})
+        self.fields['col4'].widget.attrs.update({"class": "input", "placeholder": "Add a subject(optional)"})
+        self.fields['col5'].widget.attrs.update({"class": "input", "placeholder": "Add a subject(optional)"})
+        self.fields['status'].widget.attrs.update({"class": "input", "placeholder": "Public/Private"})
 
 #add the data of rows to the table
 class RowForm(ModelForm):

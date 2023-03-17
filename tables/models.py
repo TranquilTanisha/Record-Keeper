@@ -15,7 +15,10 @@ class Table(models.Model):
     col5=models.TextField("Column 5",null=True, blank=True)
     #date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False, null=True, blank=True)
     total=models.IntegerField(default=0, null=True, blank=True)
-    #column=models.ManyToManyField("Column", blank=True)
+
+    TYPE=(('Public', 'Public'), ('Private', 'Private'))
+    status=models.CharField(max_length=200, choices=TYPE, default="Public")
+
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)    
 

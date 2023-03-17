@@ -11,7 +11,12 @@
 {% endif %}
 
 {% for table in profile.table_set.all %}
+{% if request.user.profile.id == profile.id %}
 <a href="{% url 'view-table' table.id %}"><li>{{table.title}}</li></a>
+
+{% elif table.status == "Public" %}
+<a href="{% url 'view-table' table.id %}"><li>{{table.title}}</li></a>
+{% endif %}
 {% endfor %}
 
 {% endblock %}

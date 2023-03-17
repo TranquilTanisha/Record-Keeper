@@ -43,7 +43,7 @@ def registerUser(request):
             user.first_name=user.first_name
             user.save()
 
-            #messages.success(request, "User account was created")
+            messages.success(request, "User account was created")
             login(request, user)
             return redirect('account')
 

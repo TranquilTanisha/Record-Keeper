@@ -9,4 +9,12 @@
 <h1>Name: {{profile.name}}</h1>
 <h1>Email: {{profile.email}}</h1>
 
+<p><a href="{% url 'add-table' %}">Create a new Record</a></p>
+
+<p>Previously Created Records</p>
+
+{% for table in profile.table_set.all %}
+<li><a href="{% url 'view-table' table.id %}">{{table.title}}</a></li>
+{% endfor %}
+
 {% endblock %}

@@ -15,7 +15,7 @@ def home(request):
 def viewTables(request):
     profile=request.user.profile
     tables=profile.table_set.all()
-    tables, search_query=searchTable(request)
+    tables, search_query=searchTable(request, tables)
     context={"tables":tables, "search_query":search_query}
     return render(request, "tables/view-tables.html", context)
 
@@ -38,12 +38,13 @@ def addTable(request):
 def viewTable(request, pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
+    profile=table.owner
     rows, search_query=searchRow(request, rows)
     table.getTotal
     #count=table.date.count()
     rows, order_query=orderTable(request, rows)
     c=rows.exclude(date__isnull=True).count()
-    context={"table":table, "rows":rows, "search_query":search_query, "order_query":order_query, "c":c}
+    context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c}
     return render(request, "tables/view-table.html", context)
 
 @login_required(login_url="login")

@@ -78,11 +78,9 @@
         {% if c != 0 %}
         <th scope="col">Date (yyyy-mm-dd)</th>
         {% endif %}
-        {% if request.user.id == profile.id %}
-        {% if request.user.id == profile.id %}
+        {% if request.user.profile.id == profile.id %}
         <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
         <th><a href="{% url 'add-row' table.id %}">Add a row</a></th>
-        {% endif %}
         {% endif %}
     </tr>
     {% if table.total != 0 %}
@@ -90,30 +88,53 @@
     <tr>
         <td>{{forloop.counter}}</td>
 
+        {% if table.col1 %}
         {% if row.col1 %}
         <td>{{row.col1}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
-        {% if row.col2 and table.col2 %}
+        {% if table.col2 %}
+        {% if row.col2 %}
         <td>{{row.col2}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
-        {% if row.col3 and table.col3 %}
+        {% if table.col3 %}
+        {% if row.col3 %}
         <td>{{row.col3}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
-        {% if row.col4  and table.col4 %}
+        {% if table.col4 %}
+        {% if row.col4 %}
         <td>{{row.col4}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
-        {% if row.col5 and table.col5 %}
+        {% if table.col5 %}
+        {% if row.col5 %}
         <td>{{row.col5}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
         {% if row.date %}
         <td>{{row.date}}</td>
+        {% else%}
+        <td></td>
         {% endif %}
-        {% if request.user.id == profile.id %}
+
+        {% if request.user.profile.id == profile.id %}
         <td><a href="{% url 'edit-row' table.id row.id %}">Edit row</a></td>
         <td><a href="{% url 'delete-row' row.id %}">Delete row</a></td>
         {% endif %}
@@ -127,7 +148,7 @@
     {% endif %}
 </table>
 <p>Total number of row{{table.total|pluralize:"s"}}: {{table.total}}</p>
-{% if request.user.id == profile.id %}
+{% if request.user.profile.id == profile.id %}
 <p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
 {% endif %}
 <p><a href="{% url 'view-pdf' table.id %}">View PDF</a></p>

@@ -4,21 +4,45 @@
 
 {% if name == "add table" %}
 <h1>Kindly add the further details:</h1>
-{% elif name == "edit table" %}
-<h1>Kindly edit the details of your record:</h1>
-{% endif %}
 
 <form method="POST">
     {% csrf_token %}
     {% for field in form %}
-        <div class="form__field">
-            <label for="formInput#text">{{field.label}}</label>
-            {{field}}
-                    
-        </div>
+    {% if field.name == "title" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+
+    {% elif field.name == "desc" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+
+    {% else %}
+        {{ field.label_tag }} {{ field }}
+    {% endif %}
     {% endfor %}
-    <input type="submit">
+    <input type="submit" value="Create Table">
 </form>
+
+{% elif name == "edit table" %}
+<h1>Kindly edit the details of your record:</h1>
+
+{% csrf_token %}
+    {% for field in form %}
+    {% if field.name == "title" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+
+    {% elif field.name == "desc" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+
+    {% else %}
+        {{ field.label_tag }} {{ field }}
+    {% endif %}
+    {% endfor %}
+    <input type="submit" value="Update Table">
+
+{% endif %}
 
 {% if name == "add table" %}
 <h2>PS: Date column is added by default and will only be shown if date is added for any one of the rows. </h2>

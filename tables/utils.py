@@ -1,12 +1,12 @@
 from . models import Table, Row
 from django.db.models import Q
 
-def searchTable(request):
+def searchTable(request, t):
     search_query = ""
     if request.GET.get('search_query'):
         search_query = request.GET.get('search_query')
 
-    tables = Table.objects.filter(title__icontains=search_query)
+    tables = t.distinct().filter(title__icontains=search_query)
     return tables, search_query
 
 def searchRow(request, r):
@@ -40,6 +40,8 @@ def orderTable(request, t):
         rows=t.order_by("col5")
     elif order_query== "date":
         rows=t.order_by("date")
+    elif order_query== "created":
+        rows=t.order_by("created")
     else:
         rows=t.order_by("-created")
     #rows=t.order_by(order_query)
