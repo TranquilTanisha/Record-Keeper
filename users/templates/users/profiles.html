@@ -14,7 +14,8 @@
 
 {% for profile in profiles %}
 <a href="{% url 'user-profile' profile.id %}">
-<p><li>{{profile.username}}</li></p>
+<p><li><img src="{{profile.profile_image.url}}"/></li></p>
+<p>{{profile.username}}</p>
 {% if profile.short_intro %}
 <p>     {{profile.short_intro|slice:"100"}}</p>
 {% endif %}</a>
