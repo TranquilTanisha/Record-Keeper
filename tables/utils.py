@@ -1,6 +1,8 @@
 from . models import Table, Row
 from django.db.models import Q
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def searchTable(request, t):
     search_query = ""
     if request.GET.get('search_query'):
@@ -46,3 +48,49 @@ def orderTable(request, t):
         rows=t.order_by("-created")
     #rows=t.order_by(order_query)
     return rows, order_query
+
+def paginateTable(request, t, results):
+    page = request.GET.get('page')
+    paginator = Paginator(t, results)
+
+    try:
+        tables = paginator.page(page)
+    except PageNotAnInteger:
+        tables = paginator.page(1)
+    except EmptyPage:
+        tables = paginator.page(paginator.num_pages)
+
+    leftIndex=(int(page)-1)
+    if leftIndex<1:
+        leftIndex=1
+
+    rightIndex=(int(page)+2)
+    if rightIndex>paginator.num_pages:
+        rightIndex=paginator.num_pages+1
+
+    custom_range=range(leftIndex,rightIndex)
+    return custom_range,tables
+
+def paginateRow(request, r, results):
+    page = request.GET.get('page')
+    paginator = Paginator(r, results)
+
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
+
+    leftIndex=(int(page)-1)
+    if leftIndex<1:
+        leftIndex=1
+
+    rightIndex=(int(page)+2)
+    if rightIndex>paginator.num_pages:
+        rightIndex=paginator.num_pages+1
+
+    custom_range=range(leftIndex,rightIndex)
+    return custom_range,rows
+
+

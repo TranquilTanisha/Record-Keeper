@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Table, Row
-from .forms import TableForm, RowForm
+from .models import Table, Row, Suggestion
+from .forms import TableForm, RowForm, SuggestionForm
 from django.contrib.auth.decorators import login_required
-from . utils import searchTable, searchRow, orderTable
+from . utils import searchTable, searchRow, orderTable, paginateTable, paginateRow
 
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -16,6 +16,7 @@ def viewTables(request):
     profile=request.user.profile
     tables=profile.table_set.all()
     tables, search_query=searchTable(request, tables)
+    #custom_range, tables=paginateTable(request, tables, 2)
     context={"tables":tables, "search_query":search_query}
     return render(request, "tables/view-tables.html", context)
 
@@ -41,8 +42,8 @@ def viewTable(request, pk):
     profile=table.owner
     rows, search_query=searchRow(request, rows)
     table.getTotal
-    #count=table.date.count()
     rows, order_query=orderTable(request, rows)
+    #custom_range, rows=paginateTable(request, rows, 2)
     c=rows.exclude(date__isnull=True).count()
     context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c}
     return render(request, "tables/view-table.html", context)
@@ -148,3 +149,31 @@ def download_pdf(request,pk):
     if pisa_status.err:
         return HttpResponse("We had some errors <pre>"+html+"</pre>")
     return response
+
+def suggestion(request, pk):
+    profile=request.user.profile
+    table=Table.objects.get(id=pk)
+    form=SuggestionForm()
+
+    if request.method=="POST":
+        form=SuggestionForm(request.POST)
+        if form.is_valid():
+            suggestion=form.save(commit=False)
+            suggestion.owner=profile
+            suggestion.table_name=table
+            suggestion.save()
+
+            return redirect("view-suggestion", suggestion.id)
+        
+    context={"form":form, "name": "add table"}
+    return render(request, "tables/table-form.html", context)
+
+def viewSuggestion(request, pk):
+    suggestion=Suggestion.objects.get(id=pk)
+    table=suggestion.table_name
+    rows=suggestion.table.rows_set.all()
+    count=rows.count()
+    c=rows.exclude(date__isnull=True).count()
+    context={"table":table, "rows":rows, "sug":suggestion, "c":c, "count":count}
+    return render(request, "tables/view-suggestion.html", context)
+

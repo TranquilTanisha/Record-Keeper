@@ -72,7 +72,7 @@
         </tr>
         {% endfor %}
         
-        {% else %}
+        {% elif name == "edit" %}
         <tr>
             <td>--</td>
             {% if table.col1 %}
@@ -99,6 +99,8 @@
         </tr>
         {% endif %}
     </table>
+
+
 
 {% endblock %}
 

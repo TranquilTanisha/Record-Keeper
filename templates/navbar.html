@@ -1,8 +1,6 @@
 <h1>Navbar - </h1>
 
 <a href="{% url 'home' %}">Records Keeper</a>
-<a href="{% url 'add-table' %}">New Record</a>
-<a href="{% url 'view-tables' %}">View Records</a>
 <a href="{% url 'profiles' %}">&#128269Search for a profile</a>
 
 {% if request.user.is_authenticated %}

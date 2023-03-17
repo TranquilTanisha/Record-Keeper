@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% if name != "suggestion" %}
+
 <h1>{{table.title}}</h1>
 
 {% if table.desc %}
@@ -81,7 +83,11 @@
         {% if request.user.profile.id == profile.id %}
         <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
         <th><a href="{% url 'add-row' table.id %}">Add a row</a></th>
+
+        {% else %}
+        <th><a href="{% url 'suggestion' table.id %}">Add a suggestion</a></th>
         {% endif %}
+        <th>Status: {{table.status}}</th>
     </tr>
     {% if table.total != 0 %}
     {% for row in rows %}
@@ -153,4 +159,7 @@
 {% endif %}
 <p><a href="{% url 'view-pdf' table.id %}">View PDF</a></p>
 <p><a href="{% url 'download-pdf' table.id %}">Download as PDF</a></p>
+
+{% endif %}
+
 {% endblock %}

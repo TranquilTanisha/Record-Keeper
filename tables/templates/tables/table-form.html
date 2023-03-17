@@ -11,15 +11,22 @@
     {% if field.name == "title" %}
         {{ field.label_tag }} {{ field }}
         <br>
+        <br>
 
     {% elif field.name == "desc" %}
         {{ field.label_tag }} {{ field }}
         <br>
+        <br>
 
+    {% elif field.name == "status" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+        <br>
     {% else %}
         {{ field.label_tag }} {{ field }}
     {% endif %}
     {% endfor %}
+    <br>
     <input type="submit" value="Create Table">
 </form>
 
@@ -31,15 +38,24 @@
     {% if field.name == "title" %}
         {{ field.label_tag }} {{ field }}
         <br>
+        <br>
 
     {% elif field.name == "desc" %}
         {{ field.label_tag }} {{ field }}
         <br>
+        <br>
+
+    {% elif field.name == "status" %}
+        {{ field.label_tag }} {{ field }}
+        <br>
+        <br>
 
     {% else %}
         {{ field.label_tag }} {{ field }}
+
     {% endif %}
     {% endfor %}
+    <br>
     <input type="submit" value="Update Table">
 
 {% endif %}

@@ -13,11 +13,16 @@
   </form>
 
 {% for profile in profiles %}
+
+{% if request.user.profile.id != profile.id %}
+
 <a href="{% url 'user-profile' profile.id %}">
 <p><li>{{profile.username}}</li></p>
 {% if profile.short_intro %}
 <p>     {{profile.short_intro|slice:"100"}}</p>
 {% endif %}</a>
+
+{% endif %}
 
 {% endfor %}
     {% endblock %}

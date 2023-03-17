@@ -15,4 +15,7 @@ urlpatterns = [
 
     path("view-pdf/<str:pk>/", views.view_pdf, name="view-pdf"),
     path("download-pdf/<str:pk>/", views.download_pdf, name="download-pdf"),
+
+    path("suggestion/<str:pk>/", views.suggestion, name="suggestion"),
+    path("view-suggestion/<str:pk>/", views.viewSuggestion, name="view-suggestion"),
 ]

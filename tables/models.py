@@ -13,6 +13,7 @@ class Table(models.Model):
     col3=models.TextField("Column 3",null=True, blank=True)
     col4=models.TextField("Column 4",null=True, blank=True)
     col5=models.TextField("Column 5",null=True, blank=True)
+    #row=models.ManyToManyField("Row", blank=True)
     #date=models.DateField("Date (yyyy-mm-dd)",auto_now_add=False, auto_now=False, null=True, blank=True)
     total=models.IntegerField(default=0, null=True, blank=True)
 
@@ -49,3 +50,15 @@ class Row(models.Model):
 
     def __str__(self):
         return str(self.date)
+    
+class Suggestion(models.Model):
+    owner=models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    table=models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
+    col1=models.TextField("Column 1",null=True, blank=True)
+    col2=models.TextField("Column 2",null=True, blank=True)
+    col3=models.TextField("Column 3",null=True, blank=True)
+    col4=models.TextField("Column 4",null=True, blank=True)
+    col5=models.TextField("Column 5",null=True, blank=True)
+    is_read=models.BooleanField(default=False)
+    created=models.DateTimeField(auto_now_add=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

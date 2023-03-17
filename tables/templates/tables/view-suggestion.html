@@ -1,0 +1,150 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+{% if count != 0 %}
+<form id='searchForm' class="form" action="{% url 'view-table' table.id %}" method="get">
+    <div class="form__field">
+      <label for="formInput#search">Search for a record </label>
+      <input class="input input--text" id="formInput#search" type="text" name="search_query"
+        placeholder="Search" value="{{search_query}}" />
+    </div>
+
+    <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+  </form>
+
+  <form id='searchForm' class="form" action="{% url 'view-table' table.id %}" method="get">
+    <div class="form__field">
+      <label for="formInput#search">Order By</label>
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="created" />Earliest
+      {% if table.col1 %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="col1" />{{table.col1}}
+      {% endif %}
+      {% if table.col2 %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="col2" />{{table.col2}}
+      {% endif %}
+      {% if table.col3 %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="col3" />{{table.col3}}
+      {% endif %}
+      {% if table.col4 %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="col4" />{{table.col4}}
+      {% endif %}
+      {% if table.col5 %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="col5" />{{table.col5}}
+      {% endif %}
+      {% if "Date" in rows.date %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="date" />Date
+      {% endif %}
+      <input class="input input--text" id="formInput#search" type="radio" name="order_query"
+        value="-created" />Latest
+    </div>
+
+    <input class="btn btn--sub btn--lg" type="submit" value="Order" />
+  </form>
+  {% endif %}
+
+
+<table>
+    <tr>
+        <th>Sr.No</th>
+        {% if sug.col1 %}
+        <th>{{sug.col1}}</th>
+        {% endif %}
+        {% if sug.col2 %}
+        <th>{{sug.col2}}</th>
+        {% endif %}
+        {% if sug.col3 %}
+        <th>{{sug.col3}}</th>
+        {% endif %}
+        {% if sug.col4 %}
+        <th>{{sug.col4}}</th>
+        {% endif %}
+        {% if sug.col5 %}
+        <th>{{sug.col5}}</th>
+        {% endif %}
+        {% if c != 0 %}
+        <th scope="col">Date (yyyy-mm-dd)</th>
+        {% endif %}
+        {% if request.user.profile.id == suggestion.owner.id %}
+        <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
+        <th><a href="{% url 'add-row' table.id %}">Add</a></th>
+        <th><a href="{% url 'add-row' table.id %}">Delete</a></th>
+
+        {% endif %}
+
+    </tr>
+    {% if count != 0 %}
+    {% for row in rows %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+
+        {% if sug.col1 %}
+        {% if row.col1 %}
+        <td>{{row.col1}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+
+        {% if sug.col2 %}
+        {% if row.col2 %}
+        <td>{{row.col2}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+
+        {% if sug.col3 %}
+        {% if row.col3 %}
+        <td>{{row.col3}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+
+        {% if sug.col4 %}
+        {% if row.col4 %}
+        <td>{{row.col4}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+
+        {% if sug.col5 %}
+        {% if row.col5 %}
+        <td>{{row.col5}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+
+        {% if row.date %}
+        <td>{{row.date}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+
+        {% if request.user.profile.id == profile.id %}
+        <td><a href="{% url 'edit-row' table.id row.id %}">Edit row</a></td>
+        <td><a href="{% url 'delete-row' row.id %}">Delete row</a></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    
+    {% else %}
+    <tr>
+        <td colspan="8">No records found</td>
+    </tr>
+    {% endif %}
+</table>
+<p>Total number of row{{count|pluralize:"s"}}: {{count}}</p>
+
+{% endblock %}

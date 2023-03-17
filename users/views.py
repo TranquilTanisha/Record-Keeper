@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Profile
+from tables.models import Table
 from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
 from .utils import searchProfiles
@@ -68,13 +69,15 @@ def profiles(request):
 
 def userprofile(request, pk):
     profile=Profile.objects.get(id=pk)
-    context={'profile':profile}
+    c=Table.objects.filter(owner=profile).count()
+    context={'profile':profile, 'c':c}
     return render(request, "users/user-profile.html", context)
 
 @login_required(login_url='login')
 def userAccount(request):
     profile=request.user.profile
-    context={'profile':profile}
+    c=Table.objects.filter(owner=profile).count()
+    context={'profile':profile, 'c':c}
     return render(request, "users/account.html", context)
 
 @login_required(login_url='login')
