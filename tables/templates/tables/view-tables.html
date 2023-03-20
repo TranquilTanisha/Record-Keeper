@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if tables.count != 0 %}
+{% if tables.count != 0 and table.status == "Public" %}
 
 <form id='searchForm' class="form" action="{% url 'view-tables' profile.id %}" method="get">
     <div class="form__field">
@@ -44,7 +44,7 @@
         <td><a href="{% url 'view-table' table.id %}">Edit</a></td>
         <td><a href="{% url 'delete-table' table.id %}">Delete</a></td>
         {% endif %}
-        
+      
     </tr>
     {% endfor %}
 
