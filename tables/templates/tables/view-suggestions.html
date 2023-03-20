@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h><a href="{% url 'view-table' table.id %}">{{sug.table_name.title}}</a></h>
+
+<h1>Suggestions:</h1>
+
+{% if sug.count != 0 %}
+
+{% for s in sug %}
+
+{% if request.user.profile == sug.table_name.owner %}
+
+{% if message.is_read == False %}
+<li class="message message--unread">
+{% else %}
+<li class="message">
+{% endif %}
+
+{% endif %}
+
+{% if request.user.profile == s.table_name.owner or request.user.profile == s.owner %}
+
+<h3>{{forloop.counter}}. <a href="{% url 'user-profile' s.owner.id %}">@{{s.owner}}</a></h3>
+
+{% if s.desc %}
+<h3>{{s.desc|slice:100}}</h3>
+{% endif %}
+
+<p>Posted on: {{s.created}}</p>
+
+<p><a href="{% url 'view-suggestion' s.id %}"><i class="fa fa-eye" aria-hidden="true">View</i></a></p>
+<p><a href="{% url 'delete-suggestion' s.id %}"><i class="fa fa-eye" aria-hidden="true">Delete</i></a></p>
+
+{% endif %}
+
+{% endfor %}
+
+{% else %}
+<h3>There are no suggestions here :/</h3>
+{% endif %}
+
+{% endblock %}

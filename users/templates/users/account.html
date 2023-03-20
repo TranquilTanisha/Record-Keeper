@@ -12,13 +12,7 @@
 <p><a href="{% url 'add-table' %}">Create a new Record</a></p>
 
 {% if c != 0 %}
-<p>Previously Created Records</p>
-
-{% for table in profile.table_set.all %}
-<li><a href="{% url 'view-table' table.id %}">{{table.title}}</a></li>
-<p>{{table.desc}}</p>
-{% endfor %}
-
+<p><a href="{% url 'view-tables' profile.id %}">View all records</a></p>
 {% else %}
 <p>You have not created any records yet.</p>
 {% endif %}

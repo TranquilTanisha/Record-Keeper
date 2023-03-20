@@ -2,6 +2,16 @@
 
 {% block content %}
 
+{% if key == "sug" %}
+<h1><a href="{% url 'view-table' table.table_name.id %}">{{table.title}}</a></h1>
+{% else %}
+<h1><a href="{% url 'view-table' table.id %}">{{table.title}}</a></h1>
+{% endif %}
+
+{% if table.desc %}
+<h2>{{table.desc}}</h2>
+{% endif %}
+
 <form method="POST">
     {% csrf_token %}   
     <table>

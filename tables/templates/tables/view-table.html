@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if name != "suggestion" %}
+<p><a href="{% url 'view-tables' profile.id %}">&#8249;View all records</a></p>
 
 <h1>{{table.title}}</h1>
 
@@ -83,9 +83,6 @@
         {% if request.user.profile.id == profile.id %}
         <th><a href="{% url 'edit-table' table.id %}">Edit</a></th>
         <th><a href="{% url 'add-row' table.id %}">Add a row</a></th>
-
-        {% else %}
-        <th><a href="{% url 'suggestion' table.id %}">Add a suggestion</a></th>
         {% endif %}
         <th>Status: {{table.status}}</th>
     </tr>
@@ -154,12 +151,31 @@
     {% endif %}
 </table>
 <p>Total number of row{{table.total|pluralize:"s"}}: {{table.total}}</p>
-{% if request.user.profile.id == profile.id %}
-<p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
+
+{% for sug in sugs %}
+
+{% if sug.owner == request.user.profile %}
+{{count}}+=1
 {% endif %}
+
+{% endfor %}
+
+{% if request.user.profile == sug.owner %}
+<p><a href="{% url 'view-suggestions' table.id %}">View your suggestion</a></p>
+
+{% elif request.user.profile == table.owner %}
+<p><a href="{% url 'view-suggestions' table.id %}">View suggestions</a></p>
+{% endif %}
+
+{% if request.user.profile != profile %}
+<a href="{% url 'add-suggestion' table.id %}">Add a suggestion</a>
+{% endif %}
+
 <p><a href="{% url 'view-pdf' table.id %}">View PDF</a></p>
 <p><a href="{% url 'download-pdf' table.id %}">Download as PDF</a></p>
 
+{% if request.user.profile.id == profile.id %}
+<p><a href="{% url 'delete-table' table.id %}">Delete Table</a></p>
 {% endif %}
 
 {% endblock %}

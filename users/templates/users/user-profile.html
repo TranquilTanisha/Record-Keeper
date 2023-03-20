@@ -10,19 +10,10 @@
 <p>{{profile.short_intro}}</p>
 {% endif %}
 
-
 {% if c != 0 %}
-{% for table in profile.table_set.all %}
-{% if request.user.profile.id == profile.id %}
-<a href="{% url 'view-table' table.id %}"><li>{{table.title}}</li></a>
-
-{% elif table.status == "Public" %}
-<a href="{% url 'view-table' table.id %}"><li>{{table.title}}</li></a>
-{% endif %}
-{% endfor %}
-
+<p><a href="{% url 'view-tables' profile.id %}">View all records</a></p>
 {% else %}
-<p>No records created.</p>
+<p>@{{profile.username}} has not created any records yet.</p>
 {% endif %}
 
 {% endblock %}

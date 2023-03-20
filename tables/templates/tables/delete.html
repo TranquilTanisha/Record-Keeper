@@ -6,34 +6,93 @@
     {% csrf_token %}
     {% if name == "table" %}
     <p>Are you sure you want to delete the table: "{{object.title}}"" ?</p>
+    {% elif name == "sug" %}
+    <p>Are you sure you want to delete the suggestion on "{{object.table_name.title}}" ?</p>
 
     {% else %}
-    <p>Are you sure u want to delete this row?</p>
-    <tr>
-        {% if object.col1 %}
-        <td>{{object.col1}}</td>
-        {% endif %}
+    <p>Are you sure u want to delete this row from {{object.table_name.title}}</p>
+    {% endif %}
 
+    <input type="submit" value="Yes">
+</form>
+
+<table>
+    <tr>
+        <th>Sr.No</th>
+        {% if object.col1 %}
+        <th>{{object.col1}}</th>
+        {% endif %}
         {% if object.col2 %}
-        <td>{{object.col2}}</td>
+        <th>{{object.col2}}</th>
+        {% endif %}
+        {% if object.col3 %}
+        <th>{{object.col3}}</th>
+        {% endif %}
+        {% if object.col4 %}
+        <th>{{object.col4}}</th>
+        {% endif %}
+        {% if object.col5 %}
+        <th>{{object.col5}}</th>
+        {% endif %}
+        {% if c != 0 %}
+        <th scope="col">Date (yyyy-mm-dd)</th>
+        {% endif %}
+        <th>Status: {{object.status}}</th>
+
+    </tr>
+
+    {% for row in rows %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+
+        {% if object.col1 %}
+        {% if row.col1 %}
+        <td>{{row.col1}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+        {% endif %}
+        
+        {% if object.col2 %}
+        {% if row.col2 %}
+        <td>{{row.col2}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
         {% if object.col3 %}
-        <td>{{object.col3}}</td>
+        {% if row.col3 %}
+        <td>{{row.col3}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
         {% if object.col4 %}
-        <td>{{object.col4}}</td>
+        {% if row.col4 %}
+        <td>{{row.col4}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
         {% endif %}
 
         {% if object.col5 %}
-        <td>{{object.col5}}</td>
+        {% if row.col5 %}
+        <td>{{row.col5}}</td>
+        {% else%}
+        <td></td>
         {% endif %}
-        <td>{{object.date}}</td>
-    </tr>
+        {% endif %}
 
-    {% endif %}
-    <input type="submit" value="Yes">
-</form>
+        {% if row.date %}
+        <td>{{row.date}}</td>
+        {% else%}
+        <td></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+<p>Total number of row{{table.total|pluralize:"s"}}: {{table.total}}</p>
 
 {% endblock %}

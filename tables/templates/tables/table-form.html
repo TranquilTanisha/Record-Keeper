@@ -27,12 +27,22 @@
     {% endif %}
     {% endfor %}
     <br>
+    {% if key == "sug" %}
+    <input type="submit" value="Create Suggestion">
+    {% else %}
     <input type="submit" value="Create Table">
+    {% endif %}
 </form>
 
 {% elif name == "edit table" %}
-<h1>Kindly edit the details of your record:</h1>
 
+{% if key == "usug" %}
+<h1>Kindly edit the details of your suggestion:</h1>
+{% else %}
+<h1>Kindly edit the details of your record:</h1>
+{% endif %}
+
+<form method="POST">
 {% csrf_token %}
     {% for field in form %}
     {% if field.name == "title" %}
@@ -56,7 +66,12 @@
     {% endif %}
     {% endfor %}
     <br>
+    {% if key == "usug" %}
+    <input type="submit" value="Update Suggestion">
+    {% else %}
     <input type="submit" value="Update Table">
+    {% endif %}
+</form>
 
 {% endif %}
 

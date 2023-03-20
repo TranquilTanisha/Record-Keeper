@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Table, Row, Suggestion
-from .forms import TableForm, RowForm, SuggestionForm
+from .models import Table, Row, Suggestion, Sugrow
+from .forms import TableForm, RowForm, SuggestionForm, SugrowForm
 from django.contrib.auth.decorators import login_required
 from . utils import searchTable, searchRow, orderTable, paginateTable, paginateRow
+from users.models import Profile
 
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -12,12 +13,15 @@ def home(request):
     return render(request, "tables/home.html")
 
 @login_required(login_url="login")
-def viewTables(request):
-    profile=request.user.profile
+def viewTables(request, pk):
+    profile=Profile.objects.get(id=pk)
     tables=profile.table_set.all()
     tables, search_query=searchTable(request, tables)
     #custom_range, tables=paginateTable(request, tables, 2)
-    context={"tables":tables, "search_query":search_query}
+    c=tables.count()
+    d=tables.exclude(desc__isnull=True).count()
+    count=tables.count()
+    context={"tables":tables, "profile":profile, "search_query":search_query, "c":c, "d":d, "count":count}
     return render(request, "tables/view-tables.html", context)
 
 @login_required(login_url="login")
@@ -40,12 +44,15 @@ def viewTable(request, pk):
     table=Table.objects.get(id=pk)
     rows=table.row_set.all()
     profile=table.owner
+    sugs=table.suggestion_set.all()
+    profile=table.owner
     rows, search_query=searchRow(request, rows)
     table.getTotal
     rows, order_query=orderTable(request, rows)
     #custom_range, rows=paginateTable(request, rows, 2)
     c=rows.exclude(date__isnull=True).count()
-    context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c}
+    count=0
+    context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c, "count":count, "sugs":sugs}
     return render(request, "tables/view-table.html", context)
 
 @login_required(login_url="login")
@@ -67,8 +74,8 @@ def deleteTable(request,pk):
     table=profile.table_set.get(id=pk)
     if request.method == "POST":
         table.delete()
-        return redirect("view-tables")
-    context={"object":table, "name": "table"}
+        return redirect("view-tables", profile.id)
+    context={"object":table, "rows":table.row_set.all(), "name": "table"}
     return render(request, "tables/delete.html", context)
 
 @login_required(login_url="login")
@@ -111,7 +118,7 @@ def deleteRow(request,pk):
         row.delete()
         return redirect("view-table", row.table_name.id)
         
-    context={"object":row, "name": "row"}
+    context={"object":row, "name": "row", "rows":row.table_name.row_set.all()}
     return render(request, "tables/delete.html", context)
 
 def view_pdf(request,pk):
@@ -150,7 +157,8 @@ def download_pdf(request,pk):
         return HttpResponse("We had some errors <pre>"+html+"</pre>")
     return response
 
-def suggestion(request, pk):
+@login_required(login_url="login")
+def addSuggestion(request, pk):
     profile=request.user.profile
     table=Table.objects.get(id=pk)
     form=SuggestionForm()
@@ -165,15 +173,96 @@ def suggestion(request, pk):
 
             return redirect("view-suggestion", suggestion.id)
         
-    context={"form":form, "name": "add table"}
+    context={"form":form, "name": "add table", "key":"sug"}
     return render(request, "tables/table-form.html", context)
 
+@login_required(login_url="login")
+def viewSuggestions(request, pk):
+    table=Table.objects.get(id=pk)
+    suggestions=table.suggestion_set.all()
+    c=suggestions.count()
+    count=suggestions.exclude(desc__isnull=True).count()
+    context={"table":table, "sug":suggestions, "c":c, "count":count}
+    return render(request, "tables/view-suggestions.html", context)
+
+@login_required(login_url="login")
 def viewSuggestion(request, pk):
     suggestion=Suggestion.objects.get(id=pk)
     table=suggestion.table_name
-    rows=suggestion.table.rows_set.all()
-    count=rows.count()
+    rows=suggestion.sugrow_set.all()
+    suggestion.getTotal
+    suggestion.is_read=True
     c=rows.exclude(date__isnull=True).count()
-    context={"table":table, "rows":rows, "sug":suggestion, "c":c, "count":count}
+    context={"sug":suggestion, "table":table, "rows":rows, "c":c}
     return render(request, "tables/view-suggestion.html", context)
 
+@login_required(login_url="login")
+def editSug(request, pk):
+    sug=Suggestion.objects.get(id=pk)
+    form=SuggestionForm(instance=sug)
+    
+    if request.method == "POST":
+        form=SuggestionForm(request.POST, instance=sug)
+        if form.is_valid():
+            form.save()
+            return redirect("view-suggestion", pk)
+        
+    context={"form":form, "name": "edit table", "key":"usug"}
+    return render(request, "tables/table-form.html", context)
+
+@login_required(login_url="login")
+def deleteSug(request, pk):
+    suggestion=Suggestion.objects.get(id=pk)
+    rows=suggestion.sugrow_set.all()
+    if request.method == "POST":
+        suggestion.delete()
+        return redirect("view-table", suggestion.table_name.id)
+    
+    context={"object":suggestion, "name": "sug", "rows":rows}
+    return render(request, "tables/delete.html", context)
+
+def addSugRow(request,pk):
+    suggestion=Suggestion.objects.get(id=pk)
+    table=suggestion.table_name
+    rows=suggestion.sugrow_set.all()
+    form=SugrowForm()
+
+    if request.method=="POST":
+        form=SugrowForm(request.POST)
+        if form.is_valid():
+            row=form.save(commit=False)
+            row.sug_name=suggestion
+            row.save()
+            return redirect("view-suggestion", pk)
+    
+    context={"form":form, "name": "add", "table":suggestion, "title": table.title, "rows":rows}
+    return render(request, "tables/row-form.html", context)
+
+def editSugRow(request,tk,pk):
+    suggestion=Suggestion.objects.get(id=tk)
+    row=Sugrow.objects.get(id=pk)
+    rows=suggestion.sugrow_set.all()
+    table=suggestion.table_name
+    form=SugrowForm(instance=row)
+
+    if request.method=="POST":
+        form=SugrowForm(request.POST, instance=row)
+        if form.is_valid():
+            row=form.save(commit=False)
+            row.sug_name=suggestion
+            row.save()
+            return redirect("view-suggestion", tk)
+    
+    context={"form":form, "name": "edit", "title": table.title, "rows":rows, "table":suggestion, "key":"usug"}
+    return render(request, "tables/row-form.html", context)
+
+@login_required(login_url="login")
+def deleteSugRow(request,pk):
+    row=Sugrow.objects.get(id=pk)
+    suggestion=row.sug_name
+    if request.method == "POST":
+        row.delete()
+        return redirect("view-suggestion", suggestion.id)
+        
+    context={"object":suggestion, "rows":suggestion.sugrow_set.all(), "table":suggestion}
+    return render(request, "tables/delete.html", context)
