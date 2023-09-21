@@ -152,14 +152,6 @@
 </table>
 <p>Total number of row{{table.total|pluralize:"s"}}: {{table.total}}</p>
 
-{% for sug in sugs %}
-
-{% if sug.owner == request.user.profile %}
-{{count}}+=1
-{% endif %}
-
-{% endfor %}
-
 {% if request.user.profile == sug.owner %}
 <p><a href="{% url 'view-suggestions' table.id %}">View your suggestion</a></p>
 

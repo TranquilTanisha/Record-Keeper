@@ -1,61 +1,63 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% block content %} {% if st != 0 %}
 
-{% block content %}
+<form
+  id="searchForm"
+  class="form"
+  action="{% url 'view-tables' profile.id %}"
+  method="get"
+>
+  <div class="form__field">
+    <label for="formInput#search">Search By Record name </label>
+    <input
+      class="input input--text"
+      id="formInput#search"
+      type="text"
+      name="search_query"
+      placeholder="Search"
+      value="{{search_query}}"
+    />
+  </div>
 
-{% if tables.count != 0 and table.status == "Public" %}
-
-<form id='searchForm' class="form" action="{% url 'view-tables' profile.id %}" method="get">
-    <div class="form__field">
-      <label for="formInput#search">Search By Record name </label>
-      <input class="input input--text" id="formInput#search" type="text" name="search_query"
-        placeholder="Search" value="{{search_query}}" />
-    </div>
-
-    <input class="btn btn--sub btn--lg" type="submit" value="Search" />
-  </form>
+  <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+</form>
 
 <table>
-    <tr>
-        <th>Title</th>
-        {% if d != 0 %}
-        <th>Description</th>
-        {% endif %}
-        {% if request.user == profile.user %}
-        <th>Created on</th>
-        {% endif %}
-        <th></th>
-        <th></th>
-        <th></th>
-    </tr>
-    {% for table in tables %}
-    <tr>
-        <td>{{table.title}}</td>
-        {% if table.desc %}
-        <td>{{table.desc|slice:150}}</td>
-        {% else %}
-        <td></td>
-        {% endif %}
-        {% if request.user == profile.user %}
-        <td>{{table.created}}</td>
-        {% endif %}
+  <tr>
+    <th>Title</th>
+    {% if d != 0 %}
+    <th>Description</th>
+    {% endif %} {% if request.user == profile.user %}
+    <th>Created on</th>
+    {% endif %}
+    <p><a href="{% url 'add-table' %}">Add a new record</a></p>
+    <th></th>
+    <th></th>
+  </tr>
 
-        <td><a href="{% url 'view-table' table.id %}">View</a></td>
-        {% if request.user == profile.user %}
-        <td><a href="{% url 'view-table' table.id %}">Edit</a></td>
-        <td><a href="{% url 'delete-table' table.id %}">Delete</a></td>
-        {% endif %}
-      
-    </tr>
-    {% endfor %}
+  {% for table in tables %}
+  <tr>
+    {% if table.status != "Private" %}
+    <td>{{table.title}}</td>
+    {% if table.desc %}
+    <td>{{table.desc|slice:150}}</td>
+    {% else %}
+    <td></td>
+    {% endif %} {% if request.user == profile.user %}
+    <td>{{table.created}}</td>
+    {% endif %}
 
+    <td><a href="{% url 'view-table' table.id %}">View</a></td>
+    {% if request.user == profile.user %}
+    <td><a href="{% url 'view-table' table.id %}">Edit</a></td>
+    <td><a href="{% url 'delete-table' table.id %}">Delete</a></td>
+    {% endif %} {% endif %}
+  </tr>
+  {% endfor %}
 </table>
 
 <p>Total no. of records: {{tables.count}}</p>
 
 {% else %}
 <p>No records found</p>
-{% endif %}
-
-{% include 'pagination.html' with queryset=tables custom_range=custom_range %}
-
-{% endblock %}
+{% endif %} {% include 'pagination.html' with queryset=tables
+custom_range=custom_range %} {% endblock %}

@@ -18,10 +18,9 @@ def viewTables(request, pk):
     tables=profile.table_set.all()
     tables, search_query=searchTable(request, tables)
     #custom_range, tables=paginateTable(request, tables, 2)
-    c=tables.count()
     d=tables.exclude(desc__isnull=True).count()
-    count=tables.count()
-    context={"tables":tables, "profile":profile, "search_query":search_query, "c":c, "d":d, "count":count}
+    st=tables.exclude(status="Private").count()
+    context={"tables":tables, "profile":profile, "search_query":search_query, "d":d, "st":st}
     return render(request, "tables/view-tables.html", context)
 
 @login_required(login_url="login")
@@ -45,14 +44,12 @@ def viewTable(request, pk):
     rows=table.row_set.all()
     profile=table.owner
     sugs=table.suggestion_set.all()
-    profile=table.owner
     rows, search_query=searchRow(request, rows)
     table.getTotal
     rows, order_query=orderTable(request, rows)
     #custom_range, rows=paginateTable(request, rows, 2)
     c=rows.exclude(date__isnull=True).count()
-    count=0
-    context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c, "count":count, "sugs":sugs}
+    context={"table":table, "rows":rows, "profile":profile, "search_query":search_query, "order_query":order_query, "c":c, "sugs":sugs}
     return render(request, "tables/view-table.html", context)
 
 @login_required(login_url="login")
@@ -180,9 +177,8 @@ def addSuggestion(request, pk):
 def viewSuggestions(request, pk):
     table=Table.objects.get(id=pk)
     suggestions=table.suggestion_set.all()
-    c=suggestions.count()
     count=suggestions.exclude(desc__isnull=True).count()
-    context={"table":table, "sug":suggestions, "c":c, "count":count}
+    context={"table":table, "sug":suggestions, "count":count}
     return render(request, "tables/view-suggestions.html", context)
 
 @login_required(login_url="login")
